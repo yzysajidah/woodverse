@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WOODVERSE - Terokai Dunia Tanggam Secara Interaktif</title>
+  
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CDN Tailwind CSS untuk utilitas modern dan tata letak premium -->
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=Fqr1TTmYZJkAuGiGhAIV2touiL6tY2tm1h67zCuwqNbY0rI9cXWBxHSo8lO0k66dVrRqJ3Lu9vfEP7-QOg-HzREb3LXKWed4KrKOv4UYjvx1ffyaNgXvR_TvTrS8d2QDzp1Hh1ZmhmkZ6QZOxl8HkV2zwhtfbxdAnhG6oT0l_NIEVMFi7zQUcVM4qH9ladvXxsuBjb4DnyeGkwRUU0A0sDCf9ZbEP91UUs-tnLstQZyp3uuwaX5p6TxWhch3Zl305xSfeyM8QEBxwOUU6sP2gHDGKMboLm621IxHscH4rTpaoM2ZP3TqBfqLLXQsOT7p" charset="UTF-8"></script><script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Ikon FontAwesome untuk elemen UI yang bersih -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Komponen Google Model Viewer (Rendering 3D Premium) -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            wood: {
+              50: '#FDFBF7',
+              100: '#F5ECE1',
+              200: '#E6D2BF',
+              500: '#C19A6B',
+              600: '#A4753F',
+              700: '#865A2B',
+              800: '#64411D',
+              900: '#402711',
+            }
+          },
+          boxShadow: {
+            'glass': '0 8px 32px 0 rgba(64, 39, 17, 0.08)',
+            'premium': '0 20px 50px rgba(64, 39, 17, 0.12)',
+            'glow': '0 0 40px rgba(193, 154, 107, 0.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Gaya scrollbar kustom premium */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FDFBF7;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #C19A6B;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #865A2B;
+    }
+
+    /* Keyframe animasi melayang lambat untuk efek kedalaman visual */
+    @keyframes elegantFloat {
+      0%, 100% { 
+        transform: translateY(0px) rotate(0deg); 
+      }
+      50% { 
+        transform: translateY(-15px) rotate(1deg); 
+      }
+    }
+    .floating-card-premium { 
+      animation: elegantFloat 7s ease-in-out infinite; 
+    }
+
+    /* Gaya kustom untuk komponen model-viewer */
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      --poster-color: transparent;
+    }
+  </style>
+
+  <script>
+    // Local image fallback handler for GitHub Pages/Live Server.
+    // It tries the real filenames in your images folder (including tounge.jpg spelling) and common extensions.
+    function woodverseImgError(img) {
+      const alt = (img.getAttribute('alt') || '').toLowerCase();
+      const current = (img.getAttribute('src') || '').toLowerCase();
+      let baseNames = [];
+
+      if (alt.includes('tongue') || current.includes('tongue') || current.includes('tounge')) baseNames = ['tounge', 'tongue'];
+      else if (alt.includes('mortise') || current.includes('mortise')) baseNames = ['mortise'];
+      else if (alt.includes('dovetail') || current.includes('dovetail')) baseNames = ['dovetail'];
+      else if (alt.includes('box') || current.includes('box')) baseNames = ['box'];
+      else if (alt.includes('lap') || current.includes('lap')) baseNames = ['lap'];
+      else if (alt.includes('cross') || current.includes('cross')) baseNames = ['cross'];
+      else if (alt.includes('mitre') || alt.includes('miter') || current.includes('mitre') || current.includes('miter')) baseNames = ['miter', 'mitre'];
+      else if (alt.includes('bengkel') || current.includes('home') || current.includes('hero')) baseNames = ['home'];
+      else if (alt.includes('yaziyah')) baseNames = ['yaziyah'];
+      else if (alt.includes('hidayah')) baseNames = ['dr-hidayah'];
+
+      const exts = ['jpg', 'jpeg', 'png', 'webp'];
+      const candidates = [];
+      baseNames.forEach(name => exts.forEach(ext => candidates.push(`images/${name}.${ext}`)));
+      const used = Number(img.dataset.fallbackIndex || 0);
+
+      if (used < candidates.length) {
+        img.dataset.fallbackIndex = String(used + 1);
+        img.src = candidates[used];
+      } else {
+        img.onerror = null;
+        img.style.display = 'none';
+        const parent = img.parentElement;
+        if (parent) {
+          parent.classList.add('bg-gradient-to-br', 'from-wood-100', 'to-wood-200');
+        }
+      }
+    }
+  </script>
+
+</head>
+<body class="bg-wood-50 text-wood-900 font-sans selection:bg-wood-200 selection:text-wood-900 overflow-x-hidden">
+
+  <!-- Header & Navigasi Kaca Desktop & Seluler -->
+  <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-wood-50/80 backdrop-blur-md border-b border-wood-100/50">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <!-- Identitas Logo -->
+      <a href="#" onclick="showSection('halaman-utama')" class="flex items-center space-x-3 group">
+        <div class="w-10 h-10 bg-wood-700 rounded-xl flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-105">
+          <i class="fa-solid fa-tree text-lg"></i>
+        </div>
+        <div>
+          <span class="font-heading font-extrabold text-xl tracking-tight text-wood-900 block leading-none">WOODVERSE</span>
+          <span class="text-[10px] text-wood-600 tracking-wider uppercase font-semibold">Pembelajaran Tanggam Interaktif 3D</span>
+        </div>
+      </a>
+
+      <!-- Menu Navigasi Desktop (Bahasa Melayu sepenuhnya) -->
+      <nav class="hidden lg:flex items-center space-x-8">
+        <a href="#halaman-utama" onclick="showSection('halaman-utama')" class="nav-link font-semibold text-sm text-wood-950 hover:text-wood-600 transition-colors duration-200">Halaman Utama</a>
+        <a href="#model-3d" onclick="showSection('model-3d')" class="nav-link font-medium text-sm text-wood-700 hover:text-wood-600 transition-colors duration-200">Model 3D</a>
+        <a href="#nota" onclick="showSection('nota')" class="nav-link font-medium text-sm text-wood-700 hover:text-wood-600 transition-colors duration-200">Nota</a>
+        <a href="#kuiz" onclick="showSection('kuiz')" class="nav-link font-medium text-sm text-wood-700 hover:text-wood-600 transition-colors duration-200">Kuiz</a>
+        <a href="#panduan" onclick="showSection('panduan')" class="nav-link font-medium text-sm text-wood-700 hover:text-wood-600 transition-colors duration-200">Panduan</a>
+        <a href="#tentang" onclick="showSection('tentang')" class="nav-link font-medium text-sm text-wood-700 hover:text-wood-600 transition-colors duration-200">Tentang</a>
+      </nav>
+
+      <!-- Tombol Hamburger Seluler -->
+      <button id="mobile-menu-btn" class="lg:hidden text-wood-900 focus:outline-none p-2 rounded-lg hover:bg-wood-100/50">
+        <i class="fa-solid fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Panel Navigasi Seluler -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-wood-100 bg-wood-50/95 backdrop-blur-lg transition-all duration-300">
+      <div class="px-6 py-6 flex flex-col space-y-4">
+        <a href="#halaman-utama" onclick="showSection('halaman-utama')" class="font-medium text-lg text-wood-900">Halaman Utama</a>
+        <a href="#model-3d" onclick="showSection('model-3d')" class="font-medium text-lg text-wood-700">Model 3D</a>
+        <a href="#nota" onclick="showSection('nota')" class="font-medium text-lg text-wood-700">Nota</a>
+        <a href="#kuiz" onclick="showSection('kuiz')" class="font-medium text-lg text-wood-700">Kuiz</a>
+        <a href="#panduan" onclick="showSection('panduan')" class="font-medium text-lg text-wood-700">Panduan</a>
+        <a href="#tentang" onclick="showSection('tentang')" class="font-medium text-lg text-wood-700">Tentang</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- --------------------------------------- -->
+  <!-- BAGIAN 1: HALAMAN UTAMA (HERO)          -->
+  <!-- --------------------------------------- -->
+  <main id="main-content" class="pt-20">
+    <section id="halaman-utama" class="section-view min-h-[95vh] flex flex-col justify-center relative overflow-hidden py-12 lg:py-24">
+      
+      <!-- Latar Belakang Gambar Workshop dengan Lapisan Gelap -->
+      <div class="absolute inset-0 z-0">
+        <img src="images/home.jpg" alt="Bengkel Kerja Kayu Premium" class="w-full h-full object-cover brightness-[0.22]" onerror="woodverseImgError(this)">
+        <div class="absolute inset-0 bg-gradient-to-t from-wood-50 via-transparent to-transparent"></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center w-full">
+        <!-- Sisi Kiri: Teks Hero dan Lencana -->
+        <div class="lg:col-span-7 text-left space-y-8">
+          
+          <div class="space-y-4">
+            <span class="text-wood-500 font-heading font-extrabold text-lg tracking-wide uppercase block">WOODVERSE</span>
+            <h1 class="text-4xl sm:text-6xl font-heading font-extrabold text-white leading-tight">
+              Terokai Dunia Tanggam <br>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-wood-500 to-wood-200">Secara Interaktif</span>
+            </h1>
+          </div>
+
+          <p class="text-base sm:text-lg text-wood-100/90 leading-relaxed max-w-xl">
+            Pelajari jenis-jenis tanggam kayu melalui simulasi 3D, nota digital, kuiz interaktif dan panduan praktikal dalam satu platform pembelajaran moden.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button onclick="showSection('model-3d')" class="bg-gradient-to-r from-wood-600 to-wood-500 hover:from-wood-700 hover:to-wood-600 text-white font-bold px-8 py-4 rounded-full shadow-lg transition-transform hover:scale-[1.02] flex items-center justify-center space-x-2">
+              <span>Mula Belajar</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <a href="#teroka-tanggam-section" class="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-semibold px-8 py-4 rounded-full text-center transition-all flex items-center justify-center">
+              Teroka Model 3D
+            </a>
+          </div>
+
+          <!-- Lencana Fitur Cepat -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-white/10">
+            <div class="flex items-center space-x-2 text-white/95">
+              <i class="fa-solid fa-circle-check text-wood-500"></i>
+              <span class="text-xs sm:text-sm font-medium">7 Model 3D</span>
+            </div>
+            <div class="flex items-center space-x-2 text-white/95">
+              <i class="fa-solid fa-circle-check text-wood-500"></i>
+              <span class="text-xs sm:text-sm font-medium">2 Nota Digital</span>
+            </div>
+            <div class="flex items-center space-x-2 text-white/95">
+              <i class="fa-solid fa-circle-check text-wood-500"></i>
+              <span class="text-xs sm:text-sm font-medium">3 Kuiz Interaktif</span>
+            </div>
+            <div class="flex items-center space-x-2 text-white/95">
+              <i class="fa-solid fa-circle-check text-wood-500"></i>
+              <span class="text-xs sm:text-sm font-medium">Mesra Telefon</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sisi Kanan: Frame Google Model Viewer 3D di dalam Kartu Glassmorphism (Wow-factor) -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center w-full">
+          <!-- Wadah Kartu Glassmorphism -->
+          <div class="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-6 shadow-premium hover:shadow-2xl transition-shadow duration-500 floating-card-premium relative group overflow-hidden">
+            
+            <!-- Glow latar belakang ambien elegan -->
+            <div class="absolute -top-12 -left-12 w-32 h-32 bg-wood-500/20 rounded-full blur-2xl group-hover:bg-wood-500/35 transition-colors"></div>
+            
+            <!-- Indikator Status Langsung -->
+            <div class="absolute top-6 left-6 z-10 flex items-center space-x-1.5 bg-wood-900/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-wood-600/30">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              <span class="w-2 h-2 rounded-full bg-emerald-500 absolute"></span>
+              <span class="text-[10px] font-bold text-wood-100 uppercase tracking-widest pl-1">Pratonton 3D</span>
+            </div>
+
+            <!-- Bingkai Imej Pratonton -->
+            <div class="w-full h-80 sm:h-96 rounded-3xl overflow-hidden bg-wood-950/20 border border-white/10 flex items-center justify-center relative mt-6 group-hover:shadow-lg transition-shadow">
+              <img src="images/mortise.jpg" alt="Simulasi 3D Tanggam Mortise WOODVERSE" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="woodverseImgError(this)">
+            </div>
+
+            <!-- Butang Buka Modal -->
+            <div class="text-center mt-6 space-y-3">
+              <button onclick="open3DViewer(1)" class="w-full py-3.5 bg-gradient-to-r from-wood-800 to-wood-700 hover:from-wood-900 hover:to-wood-800 text-white font-bold text-sm rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-play"></i>
+                <span>Lihat Model 3D</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAGIAN 2: KENAPA WOODVERSE -->
+    <section class="py-24 bg-white relative">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <span class="text-xs font-extrabold tracking-widest text-wood-700 uppercase">Mengapa Platform Ini Berbeza</span>
+          <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-wood-950">Kenapa WOODVERSE?</h2>
+          <p class="text-wood-600">Direka bentuk berasaskan konsep moden dan mesra pengguna, bagi memberikan alternatif kepada kaedah pembelajaran tradisional.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Kartu 1 -->
+          <div class="bg-wood-50 p-8 rounded-3xl border border-wood-100/60 hover:shadow-premium transition-all duration-300 group hover:-translate-y-2">
+            <div class="w-16 h-16 bg-wood-100 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+              🪵
+            </div>
+            <h3 class="font-heading font-bold text-xl text-wood-900 mb-3">Model 3D Interaktif</h3>
+            <p class="text-wood-600 text-sm leading-relaxed">Terokai setiap tanggam dalam paparan 3D yang boleh diputar, dizum dan dihayati reka bentuk mekanikalnya.</p>
+          </div>
+          
+          <!-- Kartu 2 -->
+          <div class="bg-wood-50 p-8 rounded-3xl border border-wood-100/60 hover:shadow-premium transition-all duration-300 group hover:-translate-y-2">
+            <div class="w-16 h-16 bg-wood-100 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+              📖
+            </div>
+            <h3 class="font-heading font-bold text-xl text-wood-900 mb-3">Nota Pembelajaran</h3>
+            <p class="text-wood-600 text-sm leading-relaxed">Nota ringkas, padat dan mudah difahami sedia digunakan sebagai rujukan utama pembelajaran tanggam.</p>
+          </div>
+
+          <!-- Kartu 3 -->
+          <div class="bg-wood-50 p-8 rounded-3xl border border-wood-100/60 hover:shadow-premium transition-all duration-300 group hover:-translate-y-2">
+            <div class="w-16 h-16 bg-wood-100 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+              🎮
+            </div>
+            <h3 class="font-heading font-bold text-xl text-wood-900 mb-3">Kuiz Interaktif</h3>
+            <p class="text-wood-600 text-sm leading-relaxed">Uji kefahaman secara menyeronokkan melalui aktiviti mini game Wordwall yang interaktif.</p>
+          </div>
+
+          <!-- Kartu 4 -->
+          <div class="bg-wood-50 p-8 rounded-3xl border border-wood-100/60 hover:shadow-premium transition-all duration-300 group hover:-translate-y-2">
+            <div class="w-16 h-16 bg-wood-100 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+              💡
+            </div>
+            <h3 class="font-heading font-bold text-xl text-wood-900 mb-3">Panduan Praktikal</h3>
+            <p class="text-wood-600 text-sm leading-relaxed">Pelajari tips penting keselamatan dan pelaksanaan sebelum menjalankan kerja amali sebenar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAGIAN 3: CARA MENGGUNAKAN WOODVERSE -->
+    <section class="py-24 bg-wood-50/50 border-y border-wood-100/40 relative">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-20 space-y-4">
+          <span class="text-xs font-extrabold tracking-widest text-wood-700 uppercase">Langkah Pembelajaran Sistemari</span>
+          <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-wood-950">Cara Menggunakan WOODVERSE</h2>
+          <p class="text-wood-600">Aliran kerja yang tersusun membantu membina pemahaman tanggam dari peringkat asas ke tahap praktikal amali.</p>
+        </div>
+
+        <!-- Alur Timeline Premium -->
+        <div class="relative">
+          <!-- Garis Penghubung -->
+          <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-wood-200 via-wood-500 to-wood-200 -translate-y-1/2 hidden lg:block"></div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 relative z-10">
+            <!-- Langkah 1 -->
+            <div class="flex flex-col items-center text-center group">
+              <div class="w-16 h-16 rounded-full bg-white border-4 border-wood-100 shadow-glass flex items-center justify-center text-wood-800 font-bold font-heading text-lg transition-all duration-300 group-hover:scale-110 group-hover:border-wood-700 group-hover:bg-wood-800 group-hover:text-white mb-6">
+                1
+              </div>
+              <h3 class="font-heading font-bold text-lg text-wood-900 mb-2">Pilih Model</h3>
+              <p class="text-xs text-wood-600 max-w-[180px]">Pilih satu daripada 7 jenis tanggam kayu utama.</p>
+            </div>
+
+            <!-- Langkah 2 -->
+            <div class="flex flex-col items-center text-center group">
+              <div class="w-16 h-16 rounded-full bg-white border-4 border-wood-100 shadow-glass flex items-center justify-center text-wood-800 font-bold font-heading text-lg transition-all duration-300 group-hover:scale-110 group-hover:border-wood-700 group-hover:bg-wood-800 group-hover:text-white mb-6">
+                2
+              </div>
+              <h3 class="font-heading font-bold text-lg text-wood-900 mb-2">Teroka 3D</h3>
+              <p class="text-xs text-wood-600 max-w-[180px]">Putar dan analisis struktur sendi kayu secara mendalam.</p>
+            </div>
+
+            <!-- Langkah 3 -->
+            <div class="flex flex-col items-center text-center group">
+              <div class="w-16 h-16 rounded-full bg-white border-4 border-wood-100 shadow-glass flex items-center justify-center text-wood-800 font-bold font-heading text-lg transition-all duration-300 group-hover:scale-110 group-hover:border-wood-700 group-hover:bg-wood-800 group-hover:text-white mb-6">
+                3
+              </div>
+              <h3 class="font-heading font-bold text-lg text-wood-900 mb-2">Baca Nota</h3>
+              <p class="text-xs text-wood-600 max-w-[180px]">Kukuhkan pengetahuan teori dengan nota padat.</p>
+            </div>
+
+            <!-- Langkah 4 -->
+            <div class="flex flex-col items-center text-center group">
+              <div class="w-16 h-16 rounded-full bg-white border-4 border-wood-100 shadow-glass flex items-center justify-center text-wood-800 font-bold font-heading text-lg transition-all duration-300 group-hover:scale-110 group-hover:border-wood-700 group-hover:bg-wood-800 group-hover:text-white mb-6">
+                4
+              </div>
+              <h3 class="font-heading font-bold text-lg text-wood-900 mb-2">Jawab Kuiz</h3>
+              <p class="text-xs text-wood-600 max-w-[180px]">Uji tahap kefahaman dengan mini game interaktif.</p>
+            </div>
+
+            <!-- Langkah 5 -->
+            <div class="flex flex-col items-center text-center group">
+              <div class="w-16 h-16 rounded-full bg-white border-4 border-wood-100 shadow-glass flex items-center justify-center text-wood-800 font-bold font-heading text-lg transition-all duration-300 group-hover:scale-110 group-hover:border-wood-700 group-hover:bg-wood-800 group-hover:text-white mb-6">
+                5
+              </div>
+              <h3 class="font-heading font-bold text-lg text-wood-900 mb-2">Kuasai Kemahiran</h3>
+              <p class="text-xs text-wood-600 max-w-[180px]">Anda kini sedia melaksanakan kerja kayu di bengkel!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAGIAN 4: TEROKAI JENIS-JENIS TANGGAM -->
+    <section id="teroka-tanggam-section" class="py-24 bg-white">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <span class="text-xs font-extrabold tracking-widest text-wood-700 uppercase">Galeri Interaktif</span>
+          <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-wood-950">Terokai Jenis-Jenis Tanggam</h2>
+          <p class="text-wood-600">Klik butang untuk membuka pelihat simulasi 3D interaktif pada mana-mana model pilihan anda.</p>
+        </div>
+
+        <!-- Grid Kartu (7 Tanggam) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          
+          <!-- Kartu 1 -->
+          <div class="bg-wood-50 rounded-3xl overflow-hidden border border-wood-100/80 hover:shadow-premium transition-all duration-300 flex flex-col h-full group hover:-translate-y-1">
+            <div class="h-48 overflow-hidden bg-wood-100 relative">
+              <img src="images/tounge.jpg" alt="Tongue and Groove" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="woodverseImgError(this)">
+              <div class="absolute top-3 right-3 bg-wood-800/95 backdrop-blur text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full">3D Ready</div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow justify-between">
+              <div>
+                <h3 class="font-heading font-bold text-lg text-wood-950 mb-2">Tongue and Groove</h3>
+                <p class="text-xs text-wood-600 leading-relaxed">Tanggam lidah dan alur digunakan secara meluas pada pemasangan lantai kayu dan panel dinding.</p>
+              </div>
+              <button onclick="open3DViewer(0)" class="mt-6 w-full py-3 bg-wood-800 hover:bg-wood-900 text-white font-semibold text-xs rounded-xl flex items-center justify-center space-x-2 transition-all">
+                <span>Lihat Model</span>
+                <i class="fa-solid fa-expand text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Kartu 2 -->
+          <div class="bg-wood-50 rounded-3xl overflow-hidden border border-wood-100/80 hover:shadow-premium transition-all duration-300 flex flex-col h-full group hover:-translate-y-1">
+            <div class="h-48 overflow-hidden bg-wood-100 relative">
+              <img src="images/mortise.jpg" alt="Mortise and Tenon" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="woodverseImgError(this)">
+              <div class="absolute top-3 right-3 bg-wood-800/95 backdrop-blur text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full">3D Ready</div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow justify-between">
+              <div>
+                <h3 class="font-heading font-bold text-lg text-wood-950 mb-2">Mortise and Tenon</h3>
+                <p class="text-xs text-wood-600 leading-relaxed">Tanggam lubang dan puting adalah teknik sambungan tradisional yang sangat kukuh untuk perabot berat.</p>
+              </div>
+              <button onclick="open3DViewer(1)" class="mt-6 w-full py-3 bg-wood-800 hover:bg-wood-900 text-white font-semibold text-xs rounded-xl flex items-center justify-center space-x-2 transition-all">
+                <span>Lihat Model</span>
+                <i class="fa-solid fa-expand text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Kartu 3 -->
+          <div class="bg-wood-50 rounded-3xl overflow-hidden border border-wood-100/80 hover:shadow-premium transition-all duration-300 flex flex-col h-full group hover:-translate-y-1">
+            <div class="h-48 overflow-hidden bg-wood-100 relative">
+              <img src="images/dovetail.jpg" alt="Dovetail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="woodverseImgError(this)">
+              <div class="absolute top-3 right-3 bg-wood-800/95 backdrop-blur text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full">3D Ready</div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow justify-between">
+              <div>
+                <h3 class="font-heading font-bold text-lg text-wood-950 mb-2">Dovetail</h3>
+                <p class="text-xs text-wood-600 leading-relaxed">Tanggam ekor burung yang ikonik, terkenal dengan ketahanan tarikan yang hebat dan estetika visualnya.</p>
+              </div>
+              <button onclick="open3DViewer(2)" class="mt-6 w-full py-3 bg-wood-800 hover:bg-wood-900 text-white font-semibold text-xs rounded-xl flex items-center justify-center space-x-2 transition-all">
+                <span>Lihat Model</span>
+                <i class="fa-solid fa-expand text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Kartu 4 -->
+          <div class="bg-wood-50 rounded-3xl overflow-hidden border border-wood-100/80 hover:shadow-premium transition-all duration-300 flex flex-col h-full group hover:-translate-y-1">
+            <div class="h-48 overflow-hidden bg-wood-100 relative">
+              <img src="images/box.jpg" alt="Box Joint" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="woodverseImgError(this)">
+              <div class="absolute top-3 right-3 bg-wood-800/95 backdrop-blur text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full">3D Ready</div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow justify-between">
+              <div>
+                <h3 class="font-heading font-bold text-lg text-wood-950 mb-2">Box Joint</h3>
+                <p class="text-xs text-wood-600 leading-relaxed">Tanggam jari / kotak yang sangat ringkas dan membentukkan corak geometri yang tersusun kemas.</p>
+              </div>
+              <button onclick="open3DViewer(3)" class="mt-6 w-full py-3 bg-wood-800 hover:bg-wood-900 text-white font-semibold text-xs rounded-xl flex items-center justify-center space-x-2 transition-all">
+                <span>Lihat Model</span>
+                <i class="fa-solid fa-expand text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Kartu 5 -->
+          <div class="bg-wood-50 rounded-3xl overflow-hidden border border-wood-100/80 hover:shadow-premium transition-all duration-300 flex flex-col h-full group hover:-translate-y-1">
+            <div class="h-48 overflow-hidden bg-wood-100 relative">
+              <img src="images/lap.jpg" alt="Lap Joint" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="woodverseImgError(this)">
+              <div class="absolute top-3 right-3 bg-wood-800/95 backdrop-blur text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full">3D Ready</div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow justify-between">
+              <div>
+                <h3 class="font-heading font-bold text-lg text-wood-950 mb-2">Lap Joint</h3>
+                <p class="text-xs text-wood-600 leading-relaxed">Tanggam tindih yang menindih dua kayu dengan ketebalan yang dikurangkan setengah bagi mengekalkan kedataran.</p>
+              </div>
+              <button onclick="open3DViewer(4)" class="mt-6 w-full py-3 bg-wood-800 hover:bg-wood-900 text-white font-semibold text-xs rounded-xl flex items-center justify-center space-x-2 transition-all">
+                <span>Lihat Model</span>
+                <i class="fa-solid fa-expand text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Kartu 6 -->
+          <div class="bg-wood-50 rounded-3xl overflow-hidden border border-wood-100/80 hover:shadow-premium transition-all duration-300 flex flex-col h-full group hover:-translate-y-1">
+            <div class="h-48 overflow-hidden bg-wood-100 relative">
+              <img src="images/cross.jpg" alt="Cross Joint" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="woodverseImgError(this)">
+              <div class="absolute top-3 right-3 bg-wood-800/95 backdrop-blur text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full">3D Ready</div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow justify-between">
+              <div>
+                <h3 class="font-heading font-bold text-lg text-wood-950 mb-2">Cross Joint</h3>
+                <p class="text-xs text-wood-600 leading-relaxed">Tanggam palang digunakan untuk menyilangkan dua kerangka kayu bersilang tegak dengan kedataran sekata.</p>
+              </div>
+              <button onclick="open3DViewer(5)" class="mt-6 w-full py-3 bg-wood-800 hover:bg-wood-900 text-white font-semibold text-xs rounded-xl flex items-center justify-center space-x-2 transition-all">
+                <span>Lihat Model</span>
+                <i class="fa-solid fa-expand text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Kartu 7 -->
+          <div class="bg-wood-50 rounded-3xl overflow-hidden border border-wood-100/80 hover:shadow-premium transition-all duration-300 flex flex-col h-full group hover:-translate-y-1">
+            <div class="h-48 overflow-hidden bg-wood-100 relative">
+              <img src="images/miter.jpg" alt="Mitre Joint" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="woodverseImgError(this)">
+              <div class="absolute top-3 right-3 bg-wood-800/95 backdrop-blur text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full">3D Ready</div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow justify-between">
+              <div>
+                <h3 class="font-heading font-bold text-lg text-wood-950 mb-2">Mitre Joint</h3>
+                <p class="text-xs text-wood-600 leading-relaxed">Tanggam temu sudut mitre menyambungkan hujung kayu bersudut 45 darjah untuk bingkai gambar yang kemas.</p>
+              </div>
+              <button onclick="open3DViewer(6)" class="mt-6 w-full py-3 bg-wood-800 hover:bg-wood-900 text-white font-semibold text-xs rounded-xl flex items-center justify-center space-x-2 transition-all">
+                <span>Lihat Model</span>
+                <i class="fa-solid fa-expand text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- --------------------------------------- -->
+  <!-- BAGIAN 5: HALAMAN MODEL 3D              -->
+  <!-- --------------------------------------- -->
+  <section id="model-3d" class="section-view hidden py-24 min-h-[90vh] bg-wood-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 space-y-4 md:space-y-0">
+        <div>
+          <span class="text-xs font-extrabold tracking-widest text-wood-700 uppercase">Persekitaran Visualisasi</span>
+          <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-wood-950 mt-2">Galeri Model 3D</h2>
+          <p class="text-wood-600 mt-2">Tekan butang 'Buka Model' pada mana-mana tanggam untuk memulakan eksplorasi pelihat 3D.</p>
+        </div>
+      </div>
+
+      <!-- Tata Letak Kisi Kartu Produk Modern untuk Kartu 3D -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- JS akan mengisi kartu produk dengan ketepatan tinggi secara dinamis -->
+      </div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------- -->
+  <!-- BAGIAN 6: HALAMAN NOTA                  -->
+  <!-- --------------------------------------- -->
+  <section id="nota" class="section-view hidden py-24 min-h-[90vh] bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-16 space-y-3">
+        <span class="text-xs font-extrabold tracking-widest text-wood-700 uppercase">Bahan Bacaan & Dokumen</span>
+        <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-wood-950">Nota Pembelajaran Digital</h2>
+        <p class="text-wood-600">Terokai modul teori dan reka bentuk tanggam kayu secara interaktif dan lengkap melalui e-nota.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Kartu Nota 1 -->
+        <div class="bg-wood-50 rounded-3xl p-8 border border-wood-100 flex flex-col md:flex-row gap-8 items-start hover:shadow-premium transition-all duration-300">
+          <div class="w-full md:w-48 h-64 bg-wood-900 rounded-2xl overflow-hidden shadow-md flex-shrink-0 relative flex items-center justify-center text-white">
+            <div class="absolute inset-0 bg-gradient-to-tr from-wood-800 to-wood-950 opacity-90"></div>
+            <div class="relative z-10 p-6 flex flex-col justify-between h-full w-full">
+              <div class="space-y-1 mt-auto mb-auto">
+                <p class="font-heading font-extrabold text-xl leading-tight">Tanggam Kayu</p>
+                <p class="text-xs text-wood-300 mt-2 border-t border-wood-700 pt-2">Nota Digital</p>
+              </div>
+              <span class="text-[10px] text-wood-500 font-bold tracking-widest uppercase">WOODVERSE</span>
+            </div>
+          </div>
+          <div class="flex flex-col justify-between h-full">
+            <div>
+              <h3 class="font-heading font-extrabold text-2xl text-wood-900 mb-3">Tanggam Kayu</h3>
+              <p class="text-sm text-wood-600 leading-relaxed mb-6">Nota pembelajaran berkaitan konsep asas, jenis, fungsi dan aplikasi tanggam kayu.</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <button onclick="openPdf('pdf/TANGGAM KAYU.pdf')" class="bg-wood-850 bg-wood-800 hover:bg-wood-900 text-white font-bold px-5 py-3 rounded-xl text-xs transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Buka Nota</span>
+              </button>
+              <a href="pdf/TANGGAM KAYU.pdf" download class="border border-wood-300 hover:bg-wood-100 text-wood-800 font-bold px-5 py-3 rounded-xl text-xs transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-download"></i>
+                <span>Muat Turun</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kartu Nota 2 -->
+        <div class="bg-wood-50 rounded-3xl p-8 border border-wood-100 flex flex-col md:flex-row gap-8 items-start hover:shadow-premium transition-all duration-300">
+          <div class="w-full md:w-48 h-64 bg-wood-900 rounded-2xl overflow-hidden shadow-md flex-shrink-0 relative flex items-center justify-center text-white">
+            <div class="absolute inset-0 bg-gradient-to-tr from-wood-800 to-wood-950 opacity-90"></div>
+            <div class="relative z-10 p-6 flex flex-col justify-between h-full w-full">
+              <div class="space-y-1 mt-auto mb-auto">
+                <p class="font-heading font-extrabold text-lg leading-tight">Alatan Tangan</p>
+                <p class="text-xs text-wood-300 mt-2 border-t border-wood-700 pt-2">Nota Digital</p>
+              </div>
+              <span class="text-[10px] text-wood-500 font-bold tracking-widest uppercase">WOODVERSE</span>
+            </div>
+          </div>
+          <div class="flex flex-col justify-between h-full">
+            <div>
+              <h3 class="font-heading font-extrabold text-2xl text-wood-900 mb-3">Alatan Tangan Untuk Membina Tanggam</h3>
+              <p class="text-sm text-wood-600 leading-relaxed mb-6">Nota pembelajaran berkaitan alatan tangan yang digunakan untuk membina tanggam serta fungsi setiap alatan.</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <button onclick="openPdf('pdf/ALATAN TANGAN UNTUK MEMBINA TANGGAM.pdf')" class="bg-wood-800 hover:bg-wood-900 text-white font-bold px-5 py-3 rounded-xl text-xs transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Buka Nota</span>
+              </button>
+              <a href="pdf/ALATAN TANGAN UNTUK MEMBINA TANGGAM.pdf" download class="border border-wood-300 hover:bg-wood-100 text-wood-800 font-bold px-5 py-3 rounded-xl text-xs transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-download"></i>
+                <span>Muat Turun</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live PDF Embed Sandbox (Hanya ditampilkan di Desktop ketika PDF aktif) -->
+      <div id="pdf-embed-container" class="hidden mt-16 bg-wood-50 rounded-3xl p-6 border border-wood-200/80">
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex items-center space-x-3">
+            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+            <span class="font-heading font-semibold text-wood-900 text-sm" id="active-pdf-title">Fail Nota Aktif</span>
+          </div>
+          <button onclick="closePdfViewer()" class="text-wood-500 hover:text-wood-900 text-sm font-semibold flex items-center space-x-2">
+            <i class="fa-solid fa-xmark"></i>
+            <span>Tutup Paparan</span>
+          </button>
+        </div>
+        <div class="w-full h-[700px] rounded-2xl overflow-hidden border border-wood-100 shadow-inner bg-white">
+          <iframe id="pdf-iframe" src="" class="w-full h-full border-none"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------- -->
+  <!-- BAGIAN 7: HALAMAN KUIZ                  -->
+  <!-- --------------------------------------- -->
+  <section id="kuiz" class="section-view hidden py-24 min-h-[90vh] bg-wood-50/50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-16 space-y-3">
+        <span class="text-xs font-extrabold tracking-widest text-wood-700 uppercase">Gamifikasi Pembelajaran</span>
+        <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-wood-950">Aktiviti & Kuiz Interaktif</h2>
+        <p class="text-wood-600">Uji kefahaman teori dan kebolehan visualisasi tanggam kayu melalui kuiz interaktif bersepadu Wordwall.</p>
+      </div>
+
+      <!-- Baris Kuiz yang Dapat Dimainkan / Sandbox -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Kartu Kuiz 1 -->
+        <div class="bg-white rounded-3xl p-8 border border-wood-100 shadow-sm hover:shadow-premium transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-xl mb-6">
+              📝
+            </div>
+            <span class="text-[10px] uppercase font-bold tracking-widest text-amber-700 bg-amber-50 px-3 py-1 rounded-full">Quiz</span>
+            <h3 class="font-heading font-extrabold text-xl text-wood-900 mt-4 mb-2">Kuiz Tanggam Kayu</h3>
+            <p class="text-sm text-wood-600 leading-relaxed mb-6">Uji pengetahuan asas mengenai anatomi, jenis tanggam dan kesesuaian mengikut spesifikasi projek kayu.</p>
+          </div>
+          <button onclick="launchQuiz('https://wordwall.net/embed/8ca67dd5350146b5a5872507b5dd5291?themeId=65&templateId=5&fontStackId=0', '📝 Kuiz Tanggam Kayu')" class="w-full py-4 bg-wood-800 hover:bg-wood-900 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-circle-play"></i>
+            <span>Mula Bermain</span>
+          </button>
+        </div>
+
+        <!-- Kartu Kuiz 2 -->
+        <div class="bg-white rounded-3xl p-8 border border-wood-100 shadow-sm hover:shadow-premium transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-xl mb-6">
+              🧩
+            </div>
+            <span class="text-[10px] uppercase font-bold tracking-widest text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full">Match Up</span>
+            <h3 class="font-heading font-extrabold text-xl text-wood-900 mt-4 mb-2">Padankan Jenis Tanggam</h3>
+            <p class="text-sm text-wood-600 leading-relaxed mb-6">Suaikan nama jenis tanggam dengan fungsi kerja sambungan yang sepadan secara tepat.</p>
+          </div>
+          <button onclick="launchQuiz('https://wordwall.net/embed/bca77bf0a0784e5fbccabd1e99d3cb2f?themeId=65&templateId=3&fontStackId=0', '🧩 Padankan Jenis Tanggam')" class="w-full py-4 bg-wood-800 hover:bg-wood-900 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-circle-play"></i>
+            <span>Mula Bermain</span>
+          </button>
+        </div>
+
+        <!-- Kartu Kuiz 3 -->
+        <div class="bg-white rounded-3xl p-8 border border-wood-100 shadow-sm hover:shadow-premium transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-xl mb-6">
+              🔍
+            </div>
+            <span class="text-[10px] uppercase font-bold tracking-widest text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">Find the Match</span>
+            <h3 class="font-heading font-extrabold text-xl text-wood-900 mt-4 mb-2">Cari Padanan Tanggam</h3>
+            <p class="text-sm text-wood-600 leading-relaxed mb-6">Kenal pasti rupa visual atau nama mekanikal tanggam berdasarkan keratan rentas visual.</p>
+          </div>
+          <button onclick="launchQuiz('https://wordwall.net/embed/df77142b5eb44274916b19295d7b751c?themeId=65&templateId=46&fontStackId=0', '🔍 Cari Padanan Tanggam')" class="w-full py-4 bg-wood-800 hover:bg-wood-900 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-circle-play"></i>
+            <span>Mula Bermain</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Area Embed Interaktif Wordwall -->
+      <div id="quiz-sandbox" class="hidden mt-16 bg-white rounded-3xl p-8 border border-wood-200 shadow-premium">
+        <div class="flex justify-between items-center mb-6">
+          <div class="flex items-center space-x-3">
+            <i class="fa-solid fa-gamepad text-wood-600 text-lg"></i>
+            <h3 class="font-heading font-extrabold text-xl text-wood-900" id="active-quiz-title">Tajuk Permainan</h3>
+          </div>
+          <button onclick="closeQuizSandbox()" class="text-wood-500 hover:text-wood-900 text-sm font-semibold flex items-center space-x-2">
+            <i class="fa-solid fa-circle-xmark"></i>
+            <span>Keluar Permainan</span>
+          </button>
+        </div>
+        <div class="w-full h-[650px] rounded-2xl overflow-hidden border border-wood-100 bg-wood-50 shadow-inner">
+          <iframe id="quiz-iframe" src="" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------- -->
+  <!-- BAGIAN 8: HALAMAN PANDUAN                -->
+  <!-- --------------------------------------- -->
+  <section id="panduan" class="section-view hidden py-24 min-h-[90vh] bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-16 space-y-3">
+        <span class="text-xs font-extrabold tracking-widest text-wood-700 uppercase">Peraturan & Amalan Terbaik</span>
+        <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-wood-950">Panduan & Keselamatan</h2>
+        <p class="text-wood-600">Panduan komprehensif bagi memastikan setiap kerja pemotongan kayu dan proses pembinaan dijalankan mengikut piawaian keselamatan industri.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Kolom 1: Tips Kerja Tanggam -->
+        <div class="bg-wood-50 rounded-3xl p-8 border border-wood-100/70 shadow-sm space-y-6">
+          <div class="w-14 h-14 bg-amber-100 text-amber-700 rounded-2xl flex items-center justify-center text-2xl">
+            💡
+          </div>
+          <h3 class="font-heading font-extrabold text-2xl text-wood-900">Tips Kerja Tanggam</h3>
+          <ul class="space-y-4 text-sm text-wood-700">
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-check text-wood-600 mt-1"></i>
+              <span><strong>Ukur Dua Kali, Potong Sekali:</strong> Sentiasa semak ukuran dan garis penanda menggunakan sesiku L sebelum memulakan pemotongan kayu.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-check text-wood-600 mt-1"></i>
+              <span><strong>Ketajaman Alatan:</strong> Pahat dan gergaji kayu yang tajam memberikan hasil potongan yang kemas dan mengelakkan kayu pecah.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-check text-wood-600 mt-1"></i>
+              <span><strong>Kekemasan Lekatan:</strong> Sapukan gam kayu secara nipis namun sekata. Penggunaan pengepit (G-clamp) semasa pengeringan menguatkan cantuman.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Kolom 2: Fakta Menarik -->
+        <div class="bg-wood-50 rounded-3xl p-8 border border-wood-100/70 shadow-sm space-y-6">
+          <div class="w-14 h-14 bg-indigo-100 text-indigo-700 rounded-2xl flex items-center justify-center text-2xl">
+            🔍
+          </div>
+          <h3 class="font-heading font-extrabold text-2xl text-wood-900">Fakta Menarik</h3>
+          <ul class="space-y-4 text-sm text-wood-700">
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-circle-info text-wood-600 mt-1"></i>
+              <span><strong>Kekuatan Struktur:</strong> Tanggam Dovetail (Ekor Burung) direka khas untuk menahan ketegangan tinggi tanpa perlu bergantung sepenuhnya kepada paku.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-circle-info text-wood-600 mt-1"></i>
+              <span><strong>Seni Tradisional:</strong> Tanggam lubang dan puting (Mortise & Tenon) telah ditemui pada perabot Mesir Purba berusia ribuan tahun!</span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-circle-info text-wood-600 mt-1"></i>
+              <span><strong>Kembang Kecut Kayu:</strong> Kayu tulen bertindak balas terhadap kelembapan udara. Sambungan tanggam yang baik mengambil kira faktor pengembangan ini.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Kolom 3: Peringatan Keselamatan -->
+        <div class="bg-wood-50 rounded-3xl p-8 border border-wood-100/70 shadow-sm space-y-6">
+          <div class="w-14 h-14 bg-red-100 text-red-700 rounded-2xl flex items-center justify-center text-2xl">
+            ⚠️
+          </div>
+          <h3 class="font-heading font-extrabold text-2xl text-wood-900">Peringatan Keselamatan</h3>
+          <ul class="space-y-4 text-sm text-wood-700">
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-triangle-exclamation text-red-600 mt-1"></i>
+              <span><strong>Alat Pelindung Diri (PPE):</strong> Pakai pelindung mata (safety goggle) dan mask habuk bagi mengelakkan habuk gergaji halus merosakkan penglihatan/pernafasan.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-triangle-exclamation text-red-600 mt-1"></i>
+              <span><strong>Penggunaan Pahat:</strong> Sentiasa halakan mata pahat menjauhi anggota badan anda semasa memahat kayu bagi mengelakkan kecederaan tergelincir.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-triangle-exclamation text-red-600 mt-1"></i>
+              <span><strong>Kekemasan Bengkel:</strong> Bersihkan habuk kayu dan pastikan lantai tidak licin bagi mencegah kemalangan atau kebakaran spontan.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------- -->
+  <!-- BAGIAN 9: HALAMAN TENTANG                -->
+  <!-- --------------------------------------- -->
+  <section id="tentang" class="section-view hidden py-24 min-h-[90vh] bg-wood-50/30">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <!-- Info Platform (Center Aligned for Modern Look) -->
+      <div class="max-w-4xl mx-auto text-center space-y-6 mb-20">
+        <span class="text-[10px] font-extrabold tracking-widest text-wood-700 uppercase bg-wood-200/50 px-4 py-1.5 rounded-full inline-block">Mengenai Projek</span>
+        <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-wood-950">WOODVERSE</h2>
+        <p class="text-wood-700 leading-relaxed text-sm md:text-base px-4">
+          WOODVERSE ialah sebuah e-modul pembelajaran digital yang dibangunkan bagi membantu pengguna memahami topik tanggam melalui pengalaman pembelajaran yang lebih interaktif. Platform ini menggabungkan simulasi visual 3D, nota pembelajaran, kuiz interaktif dan panduan praktikal bagi menyokong pembelajaran kendiri sebelum menjalankan kerja amali sebenar di bengkel rujukan.
+        </p>
+
+        <!-- Kisi Lencana Teknologi -->
+        <div class="pt-4 flex flex-wrap justify-center gap-2">
+          <span class="px-3 py-1.5 bg-white border border-wood-200/80 rounded-full text-xs text-wood-750 font-medium shadow-sm">SketchUp</span>
+          <span class="px-3 py-1.5 bg-white border border-wood-200/80 rounded-full text-xs text-wood-750 font-medium shadow-sm">Google Model Viewer</span>
+          <span class="px-3 py-1.5 bg-white border border-wood-200/80 rounded-full text-xs text-wood-750 font-medium shadow-sm">HTML5 & CSS3</span>
+          <span class="px-3 py-1.5 bg-white border border-wood-200/80 rounded-full text-xs text-wood-750 font-medium shadow-sm">JavaScript ES6</span>
+          <span class="px-3 py-1.5 bg-white border border-wood-200/80 rounded-full text-xs text-wood-750 font-medium shadow-sm">GitHub Pages</span>
+          <span class="px-3 py-1.5 bg-white border border-wood-200/80 rounded-full text-xs text-wood-750 font-medium shadow-sm">Responsive Design</span>
+        </div>
+      </div>
+
+      <!-- Kartu Profil Anggota Tim (Grid) -->
+      <div class="space-y-10">
+        <h3 class="font-heading font-extrabold text-2xl text-wood-950 text-center">Pasukan Pembangun</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          
+          <!-- Kartu Pengembang Utama -->
+          <div class="bg-[#FDF9F1] rounded-[2.5rem] p-8 md:p-10 border border-wood-100/60 shadow-glass hover:shadow-premium transition-all duration-500 flex flex-col items-center text-center h-full group relative overflow-hidden">
+            <!-- Soft background glow -->
+            <div class="absolute -top-20 -right-20 w-40 h-40 bg-wood-200/30 rounded-full blur-3xl group-hover:bg-wood-200/50 transition-colors"></div>
+            
+            <div class="relative w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-md mb-6 flex-shrink-0 bg-wood-200 group-hover:scale-105 transition-transform duration-500">
+              <img src="images/yaziyah.jpg" alt="Yaziyah Sajidah Salleh" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Yaziyah+Sajidah&background=E6D2BF&color=402711&size=256'">
+            </div>
+            
+            <div class="flex-grow flex flex-col items-center justify-start z-10">
+              <h4 class="font-heading font-extrabold text-xl text-wood-900 mb-2 mt-2">Yaziyah Sajidah Salleh</h4>
+              <p class="text-sm text-wood-800 font-semibold mb-5 leading-snug max-w-[280px]">Sarjana Muda Pendidikan Reka Bentuk dan Teknologi (Kepujian)</p>
+              
+              <div class="w-12 h-px bg-wood-200 mb-5"></div>
+              
+              <p class="text-xs text-wood-600 mb-1 font-medium">Jabatan Teknologi Kejuruteraan</p>
+              <p class="text-xs text-wood-600 mb-1 font-medium">Fakulti Teknikal dan Vokasional (FTV)</p>
+              <p class="text-[11px] text-wood-500 mt-2 font-bold tracking-wide">Universiti Pendidikan Sultan Idris</p>
+            </div>
+          </div>
+
+          <!-- Kartu Penyelia -->
+          <div class="bg-[#FDF9F1] rounded-[2.5rem] p-8 md:p-10 border border-wood-100/60 shadow-glass hover:shadow-premium transition-all duration-500 flex flex-col items-center text-center h-full group relative overflow-hidden">
+            <!-- Soft background glow -->
+            <div class="absolute -top-20 -left-20 w-40 h-40 bg-wood-200/30 rounded-full blur-3xl group-hover:bg-wood-200/50 transition-colors"></div>
+
+            <div class="relative w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-md mb-6 flex-shrink-0 bg-wood-200 group-hover:scale-105 transition-transform duration-500">
+              <img src="images/dr-hidayah.jpg" alt="Dr. Nor Hidayah Hamdan" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Dr+Nor+Hidayah&background=E6D2BF&color=402711&size=256'">
+            </div>
+            
+            <div class="flex-grow flex flex-col items-center justify-start z-10">
+              <h4 class="font-heading font-extrabold text-xl text-wood-900 mb-2 mt-2">Dr. Nor Hidayah Hamdan</h4>
+              <p class="text-sm text-wood-800 font-semibold mb-5 leading-snug max-w-[280px]">Penyelia Projek</p>
+              
+              <div class="w-12 h-px bg-wood-200 mb-5"></div>
+              
+              <p class="text-xs text-wood-600 mb-1 font-medium">Jabatan Teknologi Kejuruteraan</p>
+              <p class="text-xs text-wood-600 mb-1 font-medium">Fakulti Teknikal dan Vokasional (FTV)</p>
+              <p class="text-[11px] text-wood-500 mt-2 font-bold tracking-wide">Universiti Pendidikan Sultan Idris</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------- -->
+  <!-- MODAL PENAMPIL SIMULATOR 3D KETEPIAN TINGGI (MODAL) -->
+  <!-- -------------------------------------------------- -->
+  <div id="viewer-modal" class="fixed inset-0 z-50 bg-wood-950/90 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-6xl h-[90vh] md:h-[80vh] flex flex-col md:flex-row overflow-hidden shadow-premium relative">
+      
+      <!-- Tombol Tutup -->
+      <button onclick="close3DViewer()" class="absolute top-4 right-4 z-50 w-10 h-10 bg-white/90 hover:bg-white text-wood-900 rounded-full flex items-center justify-center shadow-md transition-transform hover:scale-105 active:scale-95">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <!-- Panel Kiri: Ruang Kerja 3D Besar -->
+      <div class="w-full md:w-2/3 h-1/2 md:h-full bg-wood-50 relative flex items-center justify-center">
+        <!-- Wadah Google Model Viewer 3D -->
+        <div class="w-full h-full" id="model-viewer-wrapper">
+          <model-viewer 
+            id="active-model" 
+            camera-controls 
+            auto-rotate 
+            ar 
+            shadow-intensity="1" 
+            alt="WOODVERSE 3D Joinery Simulation">
+          </model-viewer>
+        </div>
+
+        <!-- Lencana & Tips Interaksi 3D -->
+        <div class="absolute bottom-4 left-4 flex flex-wrap gap-2">
+          <span class="bg-white/80 backdrop-blur border border-wood-200 text-[10px] font-bold text-wood-700 px-3 py-1.5 rounded-full shadow-sm">
+            <i class="fa-solid fa-rotate-left mr-1"></i> Putar & Zum Bebas
+          </span>
+          <button onclick="toggleAutoRotate()" id="rotate-toggle-btn" class="bg-wood-800 text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center space-x-1">
+            <i class="fa-solid fa-circle-notch animate-spin mr-1"></i>
+            <span>Auto Rotate: ON</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel Kanan: Keterangan & Alur Kerja -->
+      <div class="w-full md:w-1/3 h-1/2 md:h-full p-8 flex flex-col justify-between overflow-y-auto border-t md:border-t-0 md:border-l border-wood-100">
+        <div class="space-y-6">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-wood-500">Pelihat Simulasi 3D</span>
+            <h3 id="modal-title" class="font-heading font-extrabold text-2xl text-wood-950 mt-1">Nama Tanggam</h3>
+            <p id="modal-desc" class="text-xs text-wood-600 leading-relaxed mt-2">Penerangan lengkap mengenai tanggam diletakkan di sini.</p>
+          </div>
+
+          <!-- Panduan Alur Kerja Amali Dinamis -->
+          <div class="bg-wood-50 rounded-2xl p-5 border border-wood-100">
+            <h4 class="font-heading font-extrabold text-xs uppercase tracking-wider text-wood-850 flex items-center space-x-2">
+              <i class="fa-solid fa-stairs text-wood-650"></i>
+              <span>Langkah-Langkah Kerja Amali</span>
+            </h4>
+            
+            <!-- Indikator Langkah-langkah -->
+            <div class="flex items-center justify-between mt-4">
+              <button onclick="setInstructionStep(0)" id="step-btn-0" class="step-btn w-8 h-8 rounded-full font-bold text-xs flex items-center justify-center bg-wood-800 text-white">1</button>
+              <div class="flex-grow h-0.5 bg-wood-200"></div>
+              <button onclick="setInstructionStep(1)" id="step-btn-1" class="step-btn w-8 h-8 rounded-full font-bold text-xs flex items-center justify-center bg-wood-100 text-wood-700">2</button>
+              <div class="flex-grow h-0.5 bg-wood-200"></div>
+              <button onclick="setInstructionStep(2)" id="step-btn-2" class="step-btn w-8 h-8 rounded-full font-bold text-xs flex items-center justify-center bg-wood-100 text-wood-700">3</button>
+              <div class="flex-grow h-0.5 bg-wood-200"></div>
+              <button onclick="setInstructionStep(3)" id="step-btn-3" class="step-btn w-8 h-8 rounded-full font-bold text-xs flex items-center justify-center bg-wood-100 text-wood-700">4</button>
+            </div>
+
+            <!-- Teks Deskripsi Langkah Kerja yang Aktif -->
+            <div class="mt-4 p-3 bg-white rounded-xl border border-wood-100">
+              <p id="step-desc" class="text-xs text-wood-750 leading-relaxed">Penerangan langkah kerja akan dikemaskini di sini.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel Aksi Kontrol -->
+        <div class="pt-6 border-t border-wood-100 flex flex-col space-y-3">
+          <div class="flex items-center justify-between gap-2">
+            <button onclick="prevInstruction()" class="flex-1 py-3 bg-wood-100 hover:bg-wood-200 text-wood-900 font-bold text-xs rounded-xl transition-all">
+              Terdahulu
+            </button>
+            <button onclick="nextInstruction()" class="flex-1 py-3 bg-wood-100 hover:bg-wood-200 text-wood-900 font-bold text-xs rounded-xl transition-all">
+              Seterusnya
+            </button>
+          </div>
+          <button onclick="resetModelRotation()" class="w-full py-3 bg-wood-900 hover:bg-black text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-arrows-spin"></i>
+            <span>Set Semula Kedudukan</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- --------------------------------------- -->
+  <!-- FOOTER                                  -->
+  <!-- --------------------------------------- -->
+  <footer class="bg-wood-950 text-white py-16 border-t border-wood-900 relative">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+      
+      <!-- Identitas Merek Footer -->
+      <div class="md:col-span-6 space-y-4">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-wood-700 rounded-xl flex items-center justify-center text-white">
+            <i class="fa-solid fa-tree text-lg"></i>
+          </div>
+          <div>
+            <span class="font-heading font-extrabold text-xl tracking-tight text-white block leading-none">WOODVERSE</span>
+            <span class="text-[10px] text-wood-400 tracking-wider uppercase font-semibold">Pembelajaran Tanggam Interaktif 3D</span>
+          </div>
+        </div>
+        <p class="text-xs text-wood-300 leading-relaxed max-w-sm">
+          Platform interaktif visualisasi tanggam kayu 3D untuk meningkatkan prestasi dan kemudahan pengajaran dalam modul rujukan kemahiran kayu amali.
+        </p>
+      </div>
+
+      <!-- Navigasi & Tautan di dalam Footer -->
+      <div class="md:col-span-3 space-y-4">
+        <h4 class="font-heading font-extrabold text-xs uppercase tracking-widest text-wood-400">Peta Laman</h4>
+        <div class="grid grid-cols-2 gap-2 text-xs text-wood-300">
+          <a href="#halaman-utama" onclick="showSection('halaman-utama')" class="hover:text-white transition-colors">Halaman Utama</a>
+          <a href="#model-3d" onclick="showSection('model-3d')" class="hover:text-white transition-colors">Model 3D</a>
+          <a href="#nota" onclick="showSection('nota')" class="hover:text-white transition-colors">Nota</a>
+          <a href="#kuiz" onclick="showSection('kuiz')" class="hover:text-white transition-colors">Kuiz</a>
+          <a href="#panduan" onclick="showSection('panduan')" class="hover:text-white transition-colors">Panduan</a>
+          <a href="#tentang" onclick="showSection('tentang')" class="hover:text-white transition-colors">Tentang</a>
+        </div>
+      </div>
+
+      <!-- Informasi Pengembang -->
+      <div class="md:col-span-3 space-y-2 text-left md:text-right border-t md:border-t-0 border-wood-900 pt-6 md:pt-0">
+        <span class="text-[10px] uppercase tracking-widest font-bold text-wood-400">Direka & Dibangunkan Oleh</span>
+        <p class="font-heading font-extrabold text-sm text-white">Yaziyah Sajidah Salleh</p>
+        <p class="text-[11px] text-wood-300">Reka Bentuk & Teknologi</p>
+        <p class="text-[10px] text-wood-500">© 2026 WOODVERSE. Hak Cipta Terpelihara.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- --------------------------------------- -->
+  <!-- SISTEM JAVASCRIPT KETEPIAN TINGGI       -->
+  <!-- --------------------------------------- -->
+  <script>
+    // Dataset Platform untuk Model Tanggam
+    const tanggamData = [
+      {
+        id: 0,
+        title: "Tongue and Groove",
+        desc: "Tanggam lidah dan alur digunakan secara meluas pada pemasangan lantai papan kayu bersatu dan pelapisan dinding untuk melindung keregangan papan kayu.",
+        filePath: "models/tongue_step1.glb", // Relatif terhadap folder models/
+        image: "images/tounge.jpg",
+        steps: [
+          "Langkah 1: Sediakan kedua-dua kepingan kayu dengan tebal dan lebar standard yang seragam.",
+          "Langkah 2: Gunakan mesin router atau ketam penapis khas untuk membina lidah setebal 1/3 ketebalan kayu pada satu kepingan.",
+          "Langkah 3: Tebuk lubang alur dalam yang sepadan di bahagian tengah hujung kayu kedua.",
+          "Langkah 4: Satukan dengan gam kayu dan rapatkan cantuman menggunakan pengepit untuk memastikan sambungan kedap udara."
+        ]
+      },
+      {
+        id: 1,
+        title: "Mortise and Tenon",
+        desc: "Tanggam lubang dan puting merupakan kaedah asas yang paling lasak untuk perabot berat seperti meja, almari dan kerusi tinggi tradisional.",
+        filePath: "models/mortise_step1.glb",
+        image: "images/mortise.jpg",
+        steps: [
+          "Langkah 1: Tandakan kedudukan lubang (mortise) dan puting (tenon) menggunakan tolok penanda (marking gauge).",
+          "Langkah 2: Tebuk bahagian lubang (mortise) dengan pahat atau mesin tebuk lubang tanggam.",
+          "Langkah 3: Potong lebihan kayu pada kepingan kedua bagi menghasilkan puting (tenon) yang tepat mengikut lubang.",
+          "Langkah 4: Sapu gam kayu pada kedua-dua bahagian, masukkan puting ke dalam lubang dan ketuk perlahan dengan tukul kayu."
+        ]
+      },
+      {
+        id: 2,
+        title: "Dovetail",
+        desc: "Tanggam ekor burung menawarkan cantuman kukuh daripada rintangan tegangan, sesuai untuk laci kabinet dan kotak penyimpanan bermutu tinggi.",
+        filePath: "models/dovetail_step1.glb",
+        image: "images/dovetail.jpg",
+        steps: [
+          "Langkah 1: Buat lakaran pen (pins) dan ekor (tails) menggunakan tolok serong (sliding bevel) bersudut 1:6 atau 1:8.",
+          "Langkah 2: Gergaji mengikut garisan serong pin dengan gergaji belakang (tenon saw) atau gergaji halus.",
+          "Langkah 3: Pahat lebihan kayu di antara pin dengan berhati-hati supaya tidak melebihi garisan penanda dasar.",
+          "Langkah 4: Satukan pin dan ekor, kemaskan cantuman yang ketat dengan tukul kayu dan lap baki gam yang terkeluar."
+        ]
+      },
+      {
+        id: 3,
+        title: "Box Joint",
+        desc: "Tanggam kotak atau tanggam jari adalah alternatif ringkas kepada dovetail, memberikan rupa luaran bertingkat segi empat yang sangat kemas.",
+        filePath: "models/box_step1.glb",
+        image: "images/box.jpg",
+        steps: [
+          "Langkah 1: Tandakan siri segi empat tepat selebar tebal kayu di hujung kedua-dua kepingan kayu.",
+          "Langkah 2: Gergaji menegak di sepanjang garisan penanda secara berselang seli untuk kedua-dua kepingan.",
+          "Langkah 3: Gunakan pahat tajam untuk membuang lebihan kayu di celah jari bagi mendapatkan tapak lurus rata.",
+          "Langkah 4: Gabungkan kedua-dua bahagian dengan rapat secara bertentangan arah bagi memastikan keselarasan permukaan."
+        ]
+      },
+      {
+        id: 4,
+        title: "Lap Joint",
+        desc: "Tanggam tindih ialah kaedah mengurangkan separuh ketebalan kedua-dua bahagian kayu supaya ia saling bertindih tanpa menjejaskan kedataran permukaan.",
+        filePath: "models/lap_step1.glb",
+        image: "images/lap.jpg",
+        steps: [
+          "Langkah 1: Tandakan lebar kawasan pertindihan pada hujung kayu berdasarkan kepingan kayu yang ingin disatukan.",
+          "Langkah 2: Tetapkan tolok penanda pada separuh ketebalan kayu, lakar garisan penanda di bahagian sisi kayu.",
+          "Langkah 3: Buat potongan separuh tebal dengan gergaji belakang, kemudian pahat dasar kayu dengan rata.",
+          "Langkah 4: Sapu gam kayu dan tindihkan kedua-dua permukaan yang rata itu, kepit erat sehingga gam betul-betul kering."
+        ]
+      },
+      {
+        id: 5,
+        title: "Cross Joint",
+        desc: "Tanggam palang digunakan terutamanya untuk menyilangkan dua keping kerangka kayu bersilang secara kedataran satah yang sekata.",
+        filePath: "models/cross_step1.glb",
+        image: "images/cross.jpg",
+        steps: [
+          "Langkah 1: Tandakan lebar silangan kayu pada kedudukan tengah kepingan pertama and kepingan kedua.",
+          "Langkah 2: Lakar kedalaman pemotongan separuh ketebalan kayu pada sisi silangan menggunakan tolok penanda.",
+          "Langkah 3: Potong beberapa garisan sela di dalam kawasan silangan bagi memudahkan kerja membuang lebihan kayu dengan pahat.",
+          "Langkah 4: Pahat bersih dasar silangan bagi menghasilkan parit yang flat, kemudian silangkan kedua-dua keping kayu secara bertentangan."
+        ]
+      },
+      {
+        id: 6,
+        title: "Mitre Joint",
+        desc: "Tanggam temu sudut serong menyambungkan hujung kayu bersudut 45 darjah untuk menghasilkan sudut tepat 90 darjah pada bingkai gambar.",
+        filePath: "models/miter_step1.glb",
+        image: "images/miter.jpg",
+        steps: [
+          "Langkah 1: Tandakan sudut serong 45 darjah menggunakan sesiku gabung atau kotak mitre di hujung kayu.",
+          "Langkah 2: Potong sudut serong dengan kemas menggunakan gergaji pemotong mitre atau gergaji berkuasa bagi sudut tepat.",
+          "Langkah 3: Gosok permukaan potongan dengan kertas pasir halus bagi memastikan permukaan potongan rata sepenuhnya.",
+          "Langkah 4: Sapukan gam, cantumkan kedua-dua hujung bersudut 45 darjah dan gunakan pengapit sudut (corner clamp) khas."
+        ]
+      }
+    ];
+
+    let activeModelIndex = 0;
+    let activeStep = 0;
+
+    // Fungsi pembantu untuk mengubah jalur relatif menjadi URL absolut.
+    // Ini menyelesaikan masalah kegagalan konstruksi Request dari model-viewer di iframe.
+    function resolveAbsoluteURL(relativePath) {
+      if (!relativePath) return "";
+      
+      // Jika URL sudah merupakan URL absolut, kembalikan secara langsung
+      if (/^https?:\/\/|^data:|^blob:/.test(relativePath)) {
+        return relativePath;
+      }
+      
+      try {
+        let base = document.baseURI || window.location.href;
+        // Jika dijalankan di dalam iframe tanpa asal yang sah (misalnya about:srcdoc), 
+        // tetapkan URL asal tiruan sementara untuk mengelakkan ralat TypeError pada model-viewer.
+        if (base.startsWith('about:') || base.startsWith('data:') || base === 'null') {
+          base = (window.location.origin && window.location.origin !== "null") 
+            ? window.location.origin + "/" 
+            : "http://localhost/";
+        }
+        return new URL(relativePath, base).href;
+      } catch (e) {
+        // Sandaran jika URL constructor gagal
+        const anchor = document.createElement("a");
+        anchor.href = relativePath;
+        return anchor.href;
+      }
+    }
+
+    // Toggle Menu Hamburger Seluler
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Router Aplikasi Satu Halaman (SPA) Dinamis
+    function showSection(sectionId) {
+      // Sembunyikan semua blok bagian utama
+      document.querySelectorAll('.section-view').forEach(section => {
+        section.classList.add('hidden');
+      });
+
+      // Tampilkan bagian yang aktif
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        targetSection.classList.remove('hidden');
+      }
+
+      // Tutup drawer navigasi seluler jika terbuka
+      mobileMenu.classList.add('hidden');
+
+      // Perbarui gaya aktif pada tautan navbar
+      document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('href') === `#${sectionId}`) {
+          link.classList.remove('text-wood-700');
+          link.classList.add('text-wood-950', 'font-semibold');
+        } else {
+          link.classList.remove('text-wood-950', 'font-semibold');
+          link.classList.add('text-wood-700');
+        }
+      });
+
+      // Gulir halaman dengan mulus ke atas
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Mengisi Galeri Model 3D secara dinamis dengan kartu produk premium
+    function init3DGallery() {
+      const container = document.querySelector('#model-3d .grid');
+      container.innerHTML = ''; 
+
+      tanggamData.forEach((tanggam) => {
+        const card = document.createElement('div');
+        card.className = `bg-white rounded-3xl overflow-hidden border border-wood-100 shadow-sm hover:shadow-premium transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1`;
+        card.innerHTML = `
+          <div>
+            <div class="h-56 bg-wood-50 overflow-hidden relative">
+              <img src="${tanggam.image}" alt="${tanggam.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="woodverseImgError(this)">
+              <div class="absolute inset-0 bg-gradient-to-t from-wood-900/40 via-transparent to-transparent"></div>
+            </div>
+            <div class="p-6 space-y-2">
+              <span class="text-[10px] font-bold text-wood-500 uppercase tracking-widest">Model 3D Interaktif</span>
+              <h3 class="font-heading font-extrabold text-xl text-wood-900">${tanggam.title}</h3>
+              <p class="text-xs text-wood-600 leading-relaxed">${tanggam.desc}</p>
+            </div>
+          </div>
+          <div class="p-6 pt-0">
+            <button onclick="open3DViewer(${tanggam.id})" class="w-full py-4 bg-wood-800 hover:bg-wood-900 text-white font-bold text-xs rounded-xl flex items-center justify-center space-x-2 transition-all">
+              <i class="fa-solid fa-expand"></i>
+              <span>Buka Model</span>
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Logika Pengendali Penampil 3D (Modal)
+    function open3DViewer(index) {
+      activeModelIndex = index;
+      activeStep = 0;
+      const tanggam = tanggamData[index];
+
+      // Perbarui konten teks modal
+      document.getElementById('modal-title').innerText = tanggam.title;
+      document.getElementById('modal-desc').innerText = tanggam.desc;
+
+      // Konversi ke URL absolut untuk menghindari kesalahan konstruksi Request dari model-viewer
+      const modelViewer = document.getElementById('active-model');
+      modelViewer.src = resolveAbsoluteURL(tanggam.filePath);
+
+      // Muat deskripsi langkah pertama
+      setInstructionStep(0);
+
+      // Tampilkan modal
+      const modal = document.getElementById('viewer-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    // Menutup Modal Penampil 3D
+    function close3DViewer() {
+      const modal = document.getElementById('viewer-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Mengaktifkan/menonaktifkan auto-rotate pada model viewer aktif
+    function toggleAutoRotate() {
+      const modelViewer = document.getElementById('active-model');
+      const btn = document.getElementById('rotate-toggle-btn');
+      if (modelViewer.hasAttribute('auto-rotate')) {
+        modelViewer.removeAttribute('auto-rotate');
+        btn.innerHTML = `<i class="fa-solid fa-circle-notch mr-1"></i><span>Auto Rotate: OFF</span>`;
+        btn.classList.remove('bg-wood-800');
+        btn.classList.add('bg-wood-400');
+      } else {
+        modelViewer.setAttribute('auto-rotate', '');
+        btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin mr-1"></i><span>Auto Rotate: ON</span>`;
+        btn.classList.add('bg-wood-800');
+        btn.classList.remove('bg-wood-400');
+      }
+    }
+
+    // Mengatur ulang posisi rotasi model kamera ke default
+    function resetModelRotation() {
+      const modelViewer = document.getElementById('active-model');
+      modelViewer.cameraOrbit = "0deg 75deg 105%";
+    }
+
+    // Mengelola korsel langkah instruksi di dalam modal
+    function setInstructionStep(stepIdx) {
+      activeStep = stepIdx;
+      const tanggam = tanggamData[activeModelIndex];
+      const modelViewer = document.getElementById('active-model');
+      if (modelViewer && tanggam.filePath) {
+        const stepPath = tanggam.filePath.replace(/_step\d+\.glb$/i, `_step${stepIdx + 1}.glb`);
+        modelViewer.src = resolveAbsoluteURL(stepPath);
+      }
+      document.getElementById('step-desc').innerText = tanggam.steps[stepIdx];
+
+      // Perbarui visual tombol indikator langkah
+      document.querySelectorAll('.step-btn').forEach((btn, idx) => {
+        if (idx === stepIdx) {
+          btn.classList.remove('bg-wood-100', 'text-wood-700');
+          btn.classList.add('bg-wood-800', 'text-white');
+        } else {
+          btn.classList.remove('bg-wood-800', 'text-white');
+          btn.classList.add('bg-wood-100', 'text-wood-700');
+        }
+      });
+    }
+
+    // Berpindah ke langkah instruksi berikutnya
+    function nextInstruction() {
+      if (activeStep < 3) {
+        setInstructionStep(activeStep + 1);
+      } else {
+        setInstructionStep(0); // Kembali ke awal jika sudah di akhir
+      }
+    }
+
+    // Berpindah ke langkah instruksi sebelumnya
+    function prevInstruction() {
+      if (activeStep > 0) {
+        setInstructionStep(activeStep - 1);
+      } else {
+        setInstructionStep(3); // Menuju langkah terakhir jika mundur dari langkah pertama
+      }
+    }
+
+    // Penanganan Tampilan PDF Interaktif
+    function openPdf(pdfUrl) {
+      // Jika pengguna menggunakan ponsel, buka file PDF di tab baru agar lebih responsif secara lokal
+      if (window.innerWidth < 1024) {
+        window.open(pdfUrl, '_blank');
+      } else {
+        // Desktop: Tampilkan pratinjau di dalam sandbox kaca
+        const container = document.getElementById('pdf-embed-container');
+        const iframe = document.getElementById('pdf-iframe');
+        const titleSpan = document.getElementById('active-pdf-title');
+
+        titleSpan.innerText = pdfUrl.includes('TANGGAM KAYU') 
+          ? 'Tanggam Kayu.pdf' 
+          : 'Alatan Tangan Untuk Membina Tanggam.pdf';
+
+        iframe.src = pdfUrl;
+        container.classList.remove('hidden');
+        
+        // Gulir dengan mulus ke kontainer PDF
+        container.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Menutup Penampil PDF
+    function closePdfViewer() {
+      const container = document.getElementById('pdf-embed-container');
+      const iframe = document.getElementById('pdf-iframe');
+      iframe.src = '';
+      container.classList.add('hidden');
+    }
+
+    // Penanganan Peluncuran Kuiz Wordwall di dalam Sandbox
+    function launchQuiz(url, title) {
+      const sandbox = document.getElementById('quiz-sandbox');
+      const iframe = document.getElementById('quiz-iframe');
+      const titleEl = document.getElementById('active-quiz-title');
+
+      titleEl.innerHTML = title;
+      iframe.src = url;
+      sandbox.classList.remove('hidden');
+
+      // Gulir dengan mulus ke area permainan
+      sandbox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Menutup Area Permainan Sandbox Kuiz
+    function closeQuizSandbox() {
+      const sandbox = document.getElementById('quiz-sandbox');
+      const iframe = document.getElementById('quiz-iframe');
+      iframe.src = '';
+      sandbox.classList.add('hidden');
+    }
+
+    // Jalankan inisialisasi awal saat halaman web selesai dimuat sepenuhnya
+    window.onload = function() {
+      init3DGallery();
+    }
+  </script>
+</body>
+</html>
